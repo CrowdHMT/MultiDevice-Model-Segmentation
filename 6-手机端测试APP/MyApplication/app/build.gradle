@@ -1,0 +1,56 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.chaquo.python' //添加行
+android {
+    compileSdkVersion 28
+    //buildToolsVersion '28.0.3'
+
+    defaultConfig {
+        applicationId "com.example.myapplication"
+        minSdkVersion 19
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            // 指定abi，如需在模拟器调试，增加"x86"，否则指定"armeabi-v7a"即可
+            abiFilters "armeabi-v7a", "x86"
+        }
+        python {
+            pyc {
+                src false
+            }
+            // 指定python路径
+            buildPython "D:/Anaconda/python.exe"
+            pip{
+                install "numpy"
+                install "torch"
+                install "torchvision"
+            }
+        }
+        // jni配置
+        sourceSets {
+            main {
+                jniLibs.srcDirs = ['libs']
+            }
+        }
+    }
+
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+}
